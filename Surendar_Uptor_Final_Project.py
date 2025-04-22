@@ -123,13 +123,13 @@ print(df.head())
 """Visualize the clusters using PCA """
 pca = PCA(n_components=2, random_state=42)
 X_pca = pca.fit_transform(df[['genres', 'production_countries', 'type']])
-print("PCA Applied:")
+print("PCA Applied")
 print(X_pca)
 
 """print the Visualize K-Mean clusters"""
 plt.scatter(X_pca[:, 0], X_pca[:, 1], c=labels)
-plt.xlabel('Principal Component 1')
-plt.ylabel('Principal Component 2')
+plt.xlabel('Genre Popularity')
+plt.ylabel('IMDB Score Impact')
 plt.title('K-Means Clustering')
 plt.show()
 print("Clusters Visualized")
@@ -147,15 +147,15 @@ random_search = RandomizedSearchCV(estimator=rfr, param_distributions=param_grid
 random_search.fit(X_train, y_train)
 
 """Print the best hyperparameters and score"""
-print("Best Hyperparameters:", random_search.best_params_)
-print("Best Score:", random_search.best_score_)
+print("Best Hyperparameters", random_search.best_params_)
+print("Best Score", random_search.best_score_)
 
 """Train and evaluate the best model"""
 best_rfr = RandomForestRegressor(**random_search.best_params_, random_state=42)
 best_rfr.fit(X_train, y_train)
 y_pred_best = best_rfr.predict(X_test)
 mse_best = mean_squared_error(y_test, y_pred_best)
-print("MSE with Best Model:", mse_best)
+print("MSE with Best Model", mse_best)
 
 """K-Means clustering"""
 kmeans = KMeans(n_clusters=5, random_state=42)
@@ -168,8 +168,8 @@ pca = PCA(n_components=2, random_state=42)
 X_pca = pca.fit_transform(df[['genres', 'production_countries', 'type']])
 plt.figure(figsize=(8, 6))
 sns.scatterplot(x=X_pca[:, 0], y=X_pca[:, 1], hue=labels, palette='BuGn')
-plt.xlabel('Principal Component 1')
-plt.ylabel('Principal Component 2')
+plt.xlabel('Genre Influence')
+plt.ylabel('Production Country Impact')
 plt.title('K-Means Clustering')
 plt.show()
 
@@ -204,7 +204,7 @@ y_pred_gb = gbr.predict(X_test)
 
 """Evaluate Gradient Boosting"""
 mse_gb = mean_squared_error(y_test, y_pred_gb)
-print("Gradient Boosting MSE:", mse_gb)
+print("Gradient Boosting MSE", mse_gb)
 
 """Use K-Means clustering to identify patterns in the movie datase"""
 kmeans = KMeans(n_clusters=4, random_state=42, n_init=10)
@@ -215,7 +215,7 @@ df['kmeans_cluster'] = labels_kmeans
 
 """Evaluate K-Means clustering performance"""
 silhouette_kmeans = silhouette_score(df[['genres', 'production_countries', 'type']], labels_kmeans)
-print("K-Means Silhouette Score:", silhouette_kmeans)
+print("K-Means Silhouette Score", silhouette_kmeans)
 
 """Use t-SNE to reduce the dimensionality of the dataset while preserving local structures"""
 
@@ -298,7 +298,7 @@ if 'imdb_score' not in df.columns:
 lowest_rated_movies = df[['title', 'imdb_score']].sort_values(by='imdb_score', ascending=True).head(10)
 
 """Print top 10 lowest rated movie"""
-print("Top 10 Lowest Rated Movies:")
+print("Top 10 Lowest Rated Movies")
 print(lowest_rated_movies)
 
 """Visualize lowest rated movies with bar chart"""
